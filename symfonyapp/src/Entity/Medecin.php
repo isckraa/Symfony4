@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\PatientRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\MedecinRepository")
  */
-class Patient
+class Medecin
 {
     /**
      * @ORM\Id()
@@ -19,9 +19,9 @@ class Patient
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=15)
+     * @ORM\Column(type="string", length=20)
      */
-    private $numSS;
+    private $matricule;
 
     /**
      * @ORM\Column(type="string", length=15)
@@ -34,22 +34,12 @@ class Patient
     private $prenom;
 
     /**
-     * @ORM\Column(type="date")
-     */
-    private $dateNaissance;
-
-    /**
-     * @ORM\Column(type="string", length=1)
-     */
-    private $sexe;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Consultation", mappedBy="patient")
+     * @ORM\OneToMany(targetEntity="App\Entity\Consultation", mappedBy="medecin")
      */
     private $consultations;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Ordonnance", mappedBy="patient")
+     * @ORM\OneToMany(targetEntity="App\Entity\Ordonnance", mappedBy="medecin")
      */
     private $ordonnances;
 
@@ -64,14 +54,14 @@ class Patient
         return $this->id;
     }
 
-    public function getNumSS(): ?string
+    public function getMatricule(): ?string
     {
-        return $this->numSS;
+        return $this->matricule;
     }
 
-    public function setNumSS(string $numSS): self
+    public function setMatricule(string $matricule): self
     {
-        $this->numSS = $numSS;
+        $this->matricule = $matricule;
 
         return $this;
     }
@@ -100,30 +90,6 @@ class Patient
         return $this;
     }
 
-    public function getDateNaissance(): ?\DateTimeInterface
-    {
-        return $this->dateNaissance;
-    }
-
-    public function setDateNaissance(\DateTimeInterface $dateNaissance): self
-    {
-        $this->dateNaissance = $dateNaissance;
-
-        return $this;
-    }
-
-    public function getSexe(): ?string
-    {
-        return $this->sexe;
-    }
-
-    public function setSexe(string $sexe): self
-    {
-        $this->sexe = $sexe;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Consultation[]
      */
@@ -136,7 +102,7 @@ class Patient
     {
         if (!$this->consultations->contains($consultation)) {
             $this->consultations[] = $consultation;
-            $consultation->setPatient($this);
+            $consultation->setMedecin($this);
         }
 
         return $this;
@@ -147,8 +113,8 @@ class Patient
         if ($this->consultations->contains($consultation)) {
             $this->consultations->removeElement($consultation);
             // set the owning side to null (unless already changed)
-            if ($consultation->getPatient() === $this) {
-                $consultation->setPatient(null);
+            if ($consultation->getMedecin() === $this) {
+                $consultation->setMedecin(null);
             }
         }
 
@@ -167,7 +133,7 @@ class Patient
     {
         if (!$this->ordonnances->contains($ordonnance)) {
             $this->ordonnances[] = $ordonnance;
-            $ordonnance->setPatient($this);
+            $ordonnance->setMedecin($this);
         }
 
         return $this;
@@ -178,8 +144,8 @@ class Patient
         if ($this->ordonnances->contains($ordonnance)) {
             $this->ordonnances->removeElement($ordonnance);
             // set the owning side to null (unless already changed)
-            if ($ordonnance->getPatient() === $this) {
-                $ordonnance->setPatient(null);
+            if ($ordonnance->getMedecin() === $this) {
+                $ordonnance->setMedecin(null);
             }
         }
 
