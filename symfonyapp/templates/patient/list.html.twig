@@ -15,12 +15,12 @@
                         <th scope="col">NUM SS</th>
                     </tr>
                 </thead>
-                {% for a in patients %}
+                {% for patient in patients %}
                     <tr>
-                        <td>{{ a.nom }}</td>
-                        <td>{{ a.prenom }}</td>
-                        <td>{{ a.dateNaissance|date('d/m/Y') }}</td>
-                        <td>{{ a.NumSS }}</td>
+                        <td>{{ patient.nom }}</td>
+                        <td>{{ patient.prenom }}</td>
+                        <td>{{ patient.dateNaissance|date('d/m/Y') }}</td>
+                        <td>{{ patient.NumSS }}</td>
                     </tr>
                 {% else %}
                     <tr>
