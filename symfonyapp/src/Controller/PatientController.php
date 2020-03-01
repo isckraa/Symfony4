@@ -4,6 +4,9 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Patient;
+use App\Entity\Consultation;
+use DateTime;
 
 class PatientController extends AbstractController
 {
@@ -12,8 +15,54 @@ class PatientController extends AbstractController
      */
     public function index()
     {
+
+        // INSERTION D'UN NOUVEAU PATIENT
+        $patient = new Patient();
+        $consultation = new Consultation();
+
+        // HYDRATATION DU PATIENT
+        $patient->setNumSS( '168077151115257' );
+        $patient->setNom( 'Watt' );
+        $patient->setPrenom( 'Willer' );
+        $patient->setDateNaissance( new DateTime( '1978-12-09' ) );
+        $patient->setSexe( "M" );
+        
+        // AJOUTER UNE CONSULTATION
+        $consultation->setPatient( $patient );
+        $consultation->setDateHeure( new DateTime( 'NOW' ) );
+        $patient->addConsultation( $consultation );
+
+        // RECUPERATION DU SERVICE DOCTRINE
+        $doctrine = $this->getDoctrine();
+
+        // RECUPERATION DU SERVICE DE GESTIONNE D'ENTITES
+        $entityManager = $doctrine->getManager();
+
+        // GARDER L'ENTITE PATIENT EN MEMOIRE
+        // $entityManager->persist( $consultation );
+        // $entityManager->persist( $patient );
+
+        // OUVRE UNE TRANSACTION ET ENREGISTE TOUTES LES ENTITES
+        // $entityManager->flush();
+
+        // RETURN
         return $this->render('patient/index.html.twig', [
             'controller_name' => 'PatientController',
+        ]);
+    }
+
+    /**
+     * @Route("/patient/list", name="patientlist")
+     */
+    public function list() {
+
+        $repository = $this->getDoctrine()->getManager()->getRepository(Patient::class);
+
+        $listPatients = $repository->findAll();
+
+        return $this->render('patient/list.html.twig', [
+            'controller_name' => 'PatientController',
+            'patients'        => $listPatients
         ]);
     }
 }
