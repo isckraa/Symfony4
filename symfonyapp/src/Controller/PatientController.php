@@ -52,7 +52,7 @@ class PatientController extends AbstractController
     }
 
     /**
-     * @Route("/patient/list", name="patientlist")
+     * @Route("/patient/list", name="patient_list")
      */
     public function list() {
 
