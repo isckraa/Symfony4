@@ -10,12 +10,8 @@ use DateTime;
 
 class PatientController extends AbstractController
 {
-    /**
-     * @Route("/patient", name="patient")
-     */
     public function index()
     {
-
         // INSERTION D'UN NOUVEAU PATIENT
         $patient = new Patient();
         $consultation = new Consultation();
@@ -63,11 +59,7 @@ class PatientController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/patient/list", name="patient_list")
-     */
     public function list() {
-
         $repository = $this->getDoctrine()->getManager()->getRepository(Patient::class);
 
         $listPatients = $repository->findAll();

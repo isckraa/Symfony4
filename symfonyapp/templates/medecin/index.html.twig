@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Medecin index{% endblock %}
+
+{% block body %}
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="font-weight-light mb-4">Medecin index</h1>
+
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Matricule</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Prenom</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for medecin in medecins %}
+                        <tr>
+                            <td>{{ medecin.id }}</td>
+                            <td>{{ medecin.matricule }}</td>
+                            <td>{{ medecin.nom }}</td>
+                            <td>{{ medecin.prenom }}</td>
+                            <td>
+                                <a class="btn btn-primary ml-2" href="{{ path('medecin_show', {'id': medecin.id}) }}">Show</a>
+                                <a class="btn btn-primary ml-2" href="{{ path('medecin_edit', {'id': medecin.id}) }}">Edit</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5">No records found</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <a class="btn btn-warning" href="{{ path('medecin_new') }}">Create new</a>
+        </div>
+    </div>
+{% endblock %}

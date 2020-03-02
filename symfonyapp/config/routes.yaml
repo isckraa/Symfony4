@@ -1,3 +1,12 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
+# ENTITY PATIENT
+patient:
+    path: /patient
+    controller: App\Controller\PatientController::index
+
+patient_list:
+    path: /patient/list
+    controller: App\Controller\PatientController::list
