@@ -2,71 +2,93 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Patient;
-use App\Entity\Consultation;
-use DateTime;
+use App\Form\PatientType;
+use App\Repository\PatientRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/patient")
+ */
 class PatientController extends AbstractController
 {
-    public function index()
+    /**
+     * @Route("/", name="patient_index", methods={"GET"})
+     */
+    public function index(PatientRepository $patientRepository): Response
     {
-        // INSERTION D'UN NOUVEAU PATIENT
-        $patient = new Patient();
-        $consultation = new Consultation();
-        $repository = $this->getDoctrine()->getManager()->getRepository(Patient::class);
-
-        // HYDRATATION DU PATIENT
-        $patient->setNumSS( '168077151115257' );
-        $patient->setNom( 'Watt' );
-        $patient->setPrenom( 'Willer' );
-        $patient->setDateNaissance( new DateTime( '1978-12-09' ) );
-        $patient->setSexe( "M" );
-
-        // RECHERCHE DE L'UTILISATEUR DANS BDD
-        $searchPatient = $repository->findBy(
-            array(
-                'nom'       => $patient->getNom(),
-                'prenom'    => $patient->getPrenom(),
-                'numSS'    => $patient->getNumSS()
-            )
-        );
-
-        // SI UTILISATEUR N'EXISTE PAS ALORS ON L'AJOUTE
-        if( empty( $searchPatient ) ) {
-            // AJOUTER UNE CONSULTATION
-            $consultation->setPatient( $patient );
-            $consultation->setDateHeure( new DateTime( 'NOW' ) );
-            $patient->addConsultation( $consultation );
-    
-            // RECUPERATION DU SERVICE DOCTRINE
-            $doctrine = $this->getDoctrine();
-    
-            // RECUPERATION DU SERVICE DE GESTIONNE D'ENTITES
-            $entityManager = $doctrine->getManager();
-    
-            // GARDER L'ENTITE PATIENT EN MEMOIRE
-            $entityManager->persist( $consultation );
-            $entityManager->persist( $patient );
-    
-            // OUVRE UNE TRANSACTION ET ENREGISTE TOUTES LES ENTITES
-            $entityManager->flush();
-        }
-        
         return $this->render('patient/index.html.twig', [
-            'controller_name' => 'PatientController',
+            'patients' => $patientRepository->findAll(),
         ]);
     }
 
-    public function list() {
-        $repository = $this->getDoctrine()->getManager()->getRepository(Patient::class);
+    /**
+     * @Route("/new", name="patient_new", methods={"GET","POST"})
+     */
+    public function new(Request $request): Response
+    {
+        $patient = new Patient();
+        $form = $this->createForm(PatientType::class, $patient);
+        $form->handleRequest($request);
 
-        $listPatients = $repository->findAll();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($patient);
+            $entityManager->flush();
 
-        return $this->render('patient/list.html.twig', [
-            'controller_name' => 'PatientController',
-            'patients'        => $listPatients
+            return $this->redirectToRoute('patient_index');
+        }
+
+        return $this->render('patient/new.html.twig', [
+            'patient' => $patient,
+            'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/{id}", name="patient_show", methods={"GET"})
+     */
+    public function show(Patient $patient): Response
+    {
+        return $this->render('patient/show.html.twig', [
+            'patient' => $patient,
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/edit", name="patient_edit", methods={"GET","POST"})
+     */
+    public function edit(Request $request, Patient $patient): Response
+    {
+        $form = $this->createForm(PatientType::class, $patient);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('patient_index');
+        }
+
+        return $this->render('patient/edit.html.twig', [
+            'patient' => $patient,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}", name="patient_delete", methods={"DELETE"})
+     */
+    public function delete(Request $request, Patient $patient): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$patient->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($patient);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('patient_index');
     }
 }

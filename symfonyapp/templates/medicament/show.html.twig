@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Medicament{% endblock %}
+
+{% block body %}
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="font-weight-light">Medicament</h1>
+
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <th>Id</th>
+                        <td>{{ medicament.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Denomination</th>
+                        <td>{{ medicament.denomination }}</td>
+                    </tr>
+                    <tr>
+                        <th>Conditionnement</th>
+                        <td>{{ medicament.conditionnement }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        
+            <a class="btn btn-primary" href="{{ path('medicament') }}">Back to list</a>
+            <a class="btn btn-primary" href="{{ path('medicament_edit', {'id': medicament.id}) }}">Edit</a>
+            
+            {{ include('medicament/_delete_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

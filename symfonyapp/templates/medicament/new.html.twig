@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Medicament{% endblock %}
+
+{% block body %}
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="font-weight-light">Create new Medicament</h1>
+            
+            {{ include('medicament/_form.html.twig') }}
+            
+            <a class="btn btn-primary" href="{{ path('medicament_index') }}">Back to list</a>
+        </div>
+    </div>
+{% endblock %}

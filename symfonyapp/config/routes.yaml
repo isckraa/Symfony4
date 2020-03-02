@@ -1,12 +1,28 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+home:
+   path: /
+   controller: App\Controller\DefaultController::index
 
-# ENTITY PATIENT
 patient:
     path: /patient
     controller: App\Controller\PatientController::index
 
-patient_list:
-    path: /patient/list
-    controller: App\Controller\PatientController::list
+medecin:
+    path: /medecin
+    controller: App\Controller\MedecinController::index
+
+ordonnance:
+    path: /ordonnance
+    controller: App\Controller\OrdonnanceController::index
+
+consultation: 
+    path: /consultation
+    controller: App\Controller\ConsultationController::index
+
+ligne_prescription:
+    path: /ligne/prescription
+    controller: App\Controller\LignePrescriptionController::index
+
+medicament:
+    path: /medicament
+    controller: App\Controller\MedicamentCOntroller::index
+    

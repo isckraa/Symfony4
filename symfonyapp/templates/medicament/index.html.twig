@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Medicament{% endblock %}
+
+{% block body %}
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="font-weight-light">Medicament</h1>
+
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Denomination</th>
+                        <th scope="col">Conditionnement</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for medicament in medicaments %}
+                    <tr>
+                        <td>{{ medicament.id }}</td>
+                        <td>{{ medicament.denomination }}</td>
+                        <td>{{ medicament.conditionnement }}</td>
+                        <td>
+                            <a class="btn btn-primary ml-2" href="{{ path('medicament_show', {'id': medicament.id}) }}">Show</a>
+                            <a class="btn btn-primary ml-2" href="{{ path('medicament_edit', {'id': medicament.id}) }}">Edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">No records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <a class="btn btn-warning" href="{{ path('medicament_new') }}">Create new</a>
+        
+        </div>
+    </div>
+{% endblock %}

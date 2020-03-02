@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ordonnance{% endblock %}
+
+{% block body %}
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="font-weight-light">Ordonnance</h1>
+    
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <th>Id</th>
+                        <td>{{ ordonnance.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>NumeroOrdre</th>
+                        <td>{{ ordonnance.numeroOrdre }}</td>
+                    </tr>
+                    <tr>
+                        <th>DateHeure</th>
+                        <td>{{ ordonnance.dateHeure ? ordonnance.dateHeure|date('Y-m-d') : '' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+    
+            <a class="btn btn-primary" href="{{ path('ordonnance') }}">Back to list</a>
+            <a class="btn btn-primary" href="{{ path('ordonnance_edit', {'id': ordonnance.id}) }}">Edit</a>
+            
+            {{ include('ordonnance/_delete_form.html.twig') }}
+        </div>
+    </div>
+
+
+
+{% endblock %}

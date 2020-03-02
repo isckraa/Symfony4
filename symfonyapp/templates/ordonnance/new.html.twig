@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Ordonnance{% endblock %}
+
+{% block body %}
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="font-weight-light">Create new Ordonnance</h1>
+        
+            {{ include('ordonnance/_form.html.twig') }}
+            
+            <a class="btn btn-primary" href="{{ path('ordonnance') }}">Back to list</a>
+        </div>
+    </div>
+
+
+{% endblock %}
